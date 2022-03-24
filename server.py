@@ -4,6 +4,8 @@ from http.client import responses
 
 class Application:
 
+    redirect_if_no_trailing_slash = True
+
     def __init__(self):
         self.handlers_map = {}
 
@@ -13,11 +15,11 @@ class Application:
     def __call__(self, env, start_response):
         # print(env)
         path = env['PATH_INFO']
-        if not path.endswith('/'):
-            handler = self.redirect_handler
+        if not path.endswith('/') and self.redirect_if_no_trailing_slash:
+            handler = self.redirect_trailing_slash_handler
         else:
             handler = self.handlers_map.get(path, self.not_found_handler)
-        response = handler()
+        response = handler(env)
 
         response_headers = {'Content-Type': 'text/html'}
         response_body = ''
@@ -35,33 +37,18 @@ class Application:
         return [response_body.encode('utf-8')]
 
     @staticmethod
-    def not_found_handler():
+    def not_found_handler(env):
         return {
             'text': 'Not found',
             'status_code': 404
         }
 
     @staticmethod
-    def redirect_handler(path):
+    def redirect_trailing_slash_handler(env):
+        path = env['PATH_INFO'] + '/'
         return {
             'status_code': 301,
             'extra_headers': {'location': path}
         }
 
 
-def contacts_handler():
-    return {
-        "json": {"city": "Moscow"},
-    }
-
-
-def index_handler():
-    return {
-        'text': 'Hello World',
-        'extra_headers': {'Content-Type': 'text/plain'}
-    }
-
-
-application = Application()
-application.add_handler('/', index_handler)
-application.add_handler('/contacts/', contacts_handler)
