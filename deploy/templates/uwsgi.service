@@ -3,7 +3,7 @@ Description=uWSGI Emperor service
 
 [Service]
 ExecStartPre=/bin/bash -c 'mkdir -p /run/uwsgi; chown adwiz:www-data /run/uwsgi'
-ExecStart=/usr/local/bin/uwsgi --emperor /etc/uwsgi/sites
+ExecStart=/usr/local/bin/uwsgi --emperor /etc/uwsgi/sites --ini /home/adwiz/PycharmProjects/web-dev/deploy/templates/uwsgi.ini
 Restart=always
 KillSignal=SIGQUIT
 Type=notify

@@ -33,8 +33,8 @@ def install_project_code():
 
 
 def install_pip_requirements():
-    with cd('graphql-shop-example'):
-        run('~/venv/bin/pip install -r requirements.txt --upgrade')
+    with cd('/home/adwiz/PycharmProjects/web-dev'):
+        run('venv/bin/pip install -r requirements.txt --upgrade')
 
 
 def configure_uwsgi():
@@ -45,7 +45,8 @@ def configure_uwsgi():
 
 
 def migrate_database():
-    pass
+    with cd('/home/adwiz/PycharmProjects/web-dev'):
+        run('venv/bin/python manage.py migrate')
 
 
 def configure_nginx():
