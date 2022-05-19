@@ -50,6 +50,8 @@ def migrate_database():
 
 
 def configure_nginx():
+    if files.exists('/etc/nginx/sites-enabled/default'):
+        sudo('rm /etc/nginx/sites-enabled/default')
     files.upload_template('templates/nginx.conf', '/etc/nginx/sites-enabled/gqlshop.conf', use_sudo=True)
 
 
