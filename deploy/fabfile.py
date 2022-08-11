@@ -4,7 +4,7 @@ from fabric.contrib import files
 
 env.hosts = ['localhost']
 env.user = 'adwiz'
-
+env.password = ''
 
 
 def install_packages():
