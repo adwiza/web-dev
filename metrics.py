@@ -2,7 +2,7 @@ from influxdb import InfluxDBClient
 from time import sleep
 import psutil
 
-client = InfluxDBClient(database="OTUS")
+# client = InfluxDBClient(database="OTUS")
 
 
 def get_cpu_load():
@@ -27,7 +27,8 @@ def log_cpu_load():
                 'value': load,
             }
         })
-    return client.write_points(json_data)
+    return print(json_data)
+    # return client.write_points(json_data)
 
 
 if __name__ == "__main__":
