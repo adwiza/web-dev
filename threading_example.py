@@ -1,9 +1,12 @@
 # import logging
+import math
 import threading
 from multiprocessing.pool import ThreadPool
 from time import sleep, time
 from loguru import logger
 import requests
+import sys
+sys.set_int_max_str_digits(0)
 
 
 # logging.basicConfig(level=logging.INFO)
@@ -29,11 +32,17 @@ def process_google_results(query: str) -> int:
     logger.info('Finished processing query {!r} with result len {}', query, response_len)
     if response_len > 10_000:
         try:
-            1/0
+            1 / 0
         except ZeroDivisionError:
             logger.exception('Error')
             return None
     return response_len
+
+
+def process_factorial(item: int) -> int:
+    factorial = math.factorial(item)
+    factorials_lengths = len(str(factorial))
+    return factorials_lengths
 
 
 if __name__ == "__main__":
@@ -80,13 +89,14 @@ if __name__ == "__main__":
         'google',
     )
     queries *= 2
+    factorials_args = range(9500, 9900)
     start = time()
     pool = ThreadPool(9)
-    results = pool.map(process_google_results, queries)
-
+    # results = pool.map(process_google_results, queries)
+    results = pool.map(process_factorial, factorials_args)
+    print(results)
     end = time()
 
     logger.info('pool took {:.3f} seconds', end - start)
     logger.info('results: {}', results)
     logger.info('Finished main')
-
